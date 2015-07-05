@@ -1134,4 +1134,5 @@ banner(void)
 	(*pr)("total memory = %s\n", pbuf);
 	format_bytes(pbuf, MEM_PBUFSIZE, ctob((uint64_t)uvmexp.free));
 	(*pr)("avail memory = %s\n", pbuf);
+	(*pr)("This is fgken netbsd!\n");
 }
