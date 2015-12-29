@@ -8,7 +8,7 @@ INCS=	bpf.h bpfjit.h bpfdesc.h dlt.h ethertypes.h if.h if_arc.h if_arp.h \
 	if_pflog.h if_ppp.h if_pppoe.h if_sppp.h if_srt.h if_stf.h \
 	if_tap.h if_token.h if_tun.h if_types.h if_vlanvar.h net_stats.h \
 	netisr.h pfil.h pfkeyv2.h pfvar.h ppp-comp.h ppp_defs.h radix.h \
-	raw_cb.h route.h slcompress.h slip.h zlib.h
+	raw_cb.h route.h slcompress.h slip.h zlib.h if_lat.h
 
 SUBDIR=	agr npf
 

@@ -1399,6 +1399,7 @@ defpseudo bpfilter:	ifnet, bpf_filter
 defpseudo strip:	ifnet
 defpseudo gre:		ifnet
 defpseudo gif:		ifnet
+defpseudo lat:		ifnet
 defpseudo faith:	ifnet
 defpseudo ifmpls:	ifnet
 defpseudo srt:		ifnet
