@@ -197,6 +197,7 @@ struct	ip6_pktopts {
 #define	IP6_STAT_MEXT2M		313	/* two or more ext mbuf */
 #define	IP6_STAT_EXTHDRTOOLONG	314	/* ext hdr are not contiguous */
 #define	IP6_STAT_NOGIF		315	/* no match gif found */
+#define	IP6_STAT_NOLAT		315	/* no match gif found */
 #define	IP6_STAT_TOOMANYHDR	316	/* discarded due to too many headers */
 	/*
 	 * statistics for improvement of the source address selection

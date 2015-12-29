@@ -155,6 +155,7 @@ struct ip_moptions {
 #define	IP_STAT_RCVMEMDROP	26	/* frags dropped for lack of memory */
 #define	IP_STAT_TOOLONG		27	/* ip length > max ip packet size */
 #define	IP_STAT_NOGIF		28	/* no match gif found */
+#define	IP_STAT_NOLAT		28
 #define	IP_STAT_BADADDR		29	/* invalid address on header */
 
 #define	IP_NSTATS		30

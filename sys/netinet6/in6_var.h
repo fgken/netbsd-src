@@ -396,6 +396,7 @@ struct	in6_rrenumreq {
 
 #define SIOCSIFADDR_IN6		 _IOW('i', 12, struct in6_ifreq)
 #define SIOCGIFADDR_IN6		_IOWR('i', 33, struct in6_ifreq)
+#define SIOCLATADDR_IN6		_IOWR('i', 33, struct in6_ifreq)
 
 #ifdef _KERNEL
 /*
@@ -407,33 +408,42 @@ struct	in6_rrenumreq {
 #endif
 
 #define SIOCGIFDSTADDR_IN6	_IOWR('i', 34, struct in6_ifreq)
+#define SIOCLATDSTADDR_IN6	_IOWR('i', 34, struct in6_ifreq)
 #define SIOCGIFNETMASK_IN6	_IOWR('i', 37, struct in6_ifreq)
+#define SIOCLATNETMASK_IN6	_IOWR('i', 37, struct in6_ifreq)
 
 #define SIOCDIFADDR_IN6		 _IOW('i', 25, struct in6_ifreq)
 /* 26 was OSIOCAIFADDR_IN6 */
 
 /* 70 was OSIOCSIFPHYADDR_IN6 */
 #define	SIOCGIFPSRCADDR_IN6	_IOWR('i', 71, struct in6_ifreq)
+#define	SIOCLATPSRCADDR_IN6	_IOWR('i', 71, struct in6_ifreq)
 #define	SIOCGIFPDSTADDR_IN6	_IOWR('i', 72, struct in6_ifreq)
+#define	SIOCLATPDSTADDR_IN6	_IOWR('i', 72, struct in6_ifreq)
 
 #define SIOCGIFAFLAG_IN6	_IOWR('i', 73, struct in6_ifreq)
+#define SIOCLATAFLAG_IN6	_IOWR('i', 73, struct in6_ifreq)
 
 #define SIOCGDRLST_IN6		_IOWR('i', 74, struct in6_drlist)
 #define SIOCGPRLST_IN6		_IOWR('i', 75, struct in6_oprlist)
 #ifdef _KERNEL
 #define OSIOCGIFINFO_IN6	_IOWR('i', 76, struct in6_ondireq)
+#define OSIOCLATINFO_IN6	_IOWR('i', 76, struct in6_ondireq)
 #endif
 #define SIOCSNDFLUSH_IN6	_IOWR('i', 77, struct in6_ifreq)
 #define SIOCGNBRINFO_IN6	_IOWR('i', 78, struct in6_nbrinfo)
 #define SIOCSPFXFLUSH_IN6	_IOWR('i', 79, struct in6_ifreq)
 #define SIOCSRTRFLUSH_IN6	_IOWR('i', 80, struct in6_ifreq)
 /* 81 was old SIOCGIFALIFETIME_IN6 */
+/* 81 was old SIOCLATALIFETIME_IN6 */
 #if 0
 /* withdrawn - do not reuse number 82 */
 #define SIOCSIFALIFETIME_IN6	_IOWR('i', 82, struct in6_ifreq)
 #endif
 #define SIOCGIFSTAT_IN6		_IOWR('i', 83, struct in6_ifreq)
+#define SIOCLATSTAT_IN6		_IOWR('i', 83, struct in6_ifreq)
 #define SIOCGIFSTAT_ICMP6	_IOWR('i', 84, struct in6_ifreq)
+#define SIOCLATSTAT_ICMP6	_IOWR('i', 84, struct in6_ifreq)
 
 #define SIOCSDEFIFACE_IN6	_IOWR('i', 85, struct in6_ndifreq)
 #define SIOCGDEFIFACE_IN6	_IOWR('i', 86, struct in6_ndifreq)
@@ -442,15 +452,20 @@ struct	in6_rrenumreq {
 
 #define SIOCSIFPREFIX_IN6	_IOW('i', 100, struct in6_prefixreq) /* set */
 #define SIOCGIFPREFIX_IN6	_IOWR('i', 101, struct in6_prefixreq) /* get */
+#define SIOCLATPREFIX_IN6	_IOWR('i', 101, struct in6_prefixreq) /* get */
 #define SIOCDIFPREFIX_IN6	_IOW('i', 102, struct in6_prefixreq) /* del */
 #define SIOCAIFPREFIX_IN6	_IOW('i', 103, struct in6_rrenumreq) /* add */
 #define SIOCCIFPREFIX_IN6	_IOW('i', 104, \
 				     struct in6_rrenumreq) /* change */
 #define SIOCSGIFPREFIX_IN6	_IOW('i', 105, \
 				     struct in6_rrenumreq) /* set global */
+#define SIOCSLATPREFIX_IN6	_IOW('i', 105, \
+				     struct in6_rrenumreq) /* set global */
 #define SIOCGIFALIFETIME_IN6	_IOWR('i', 106, struct in6_ifreq)
+#define SIOCLATALIFETIME_IN6	_IOWR('i', 106, struct in6_ifreq)
 #define SIOCAIFADDR_IN6		_IOW('i', 107, struct in6_aliasreq)
 #define SIOCGIFINFO_IN6		_IOWR('i', 108, struct in6_ndireq)
+#define SIOCLATINFO_IN6		_IOWR('i', 108, struct in6_ndireq)
 #define SIOCSIFINFO_IN6		_IOWR('i', 109, struct in6_ndireq)
 #define SIOCSIFPHYADDR_IN6      _IOW('i', 110, struct in6_aliasreq)
 

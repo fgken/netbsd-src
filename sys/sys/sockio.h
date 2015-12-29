@@ -50,29 +50,38 @@
 
 #define	SIOCSIFADDR	 _IOW('i', 12, struct ifreq)	/* set ifnet address */
 #define	SIOCGIFADDR	_IOWR('i', 33, struct ifreq)	/* get ifnet address */
+#define	SIOCLATADDR	_IOWR('i', 33, struct ifreq)	/* get ifnet address */
 
 #define	SIOCSIFDSTADDR	 _IOW('i', 14, struct ifreq)	/* set p-p address */
 #define	SIOCGIFDSTADDR	_IOWR('i', 34, struct ifreq)	/* get p-p address */
+#define	SIOCLATDSTADDR	_IOWR('i', 34, struct ifreq)	/* get p-p address */
 
 #define	SIOCSIFFLAGS	 _IOW('i', 16, struct ifreq)	/* set ifnet flags */
 #define	SIOCGIFFLAGS	_IOWR('i', 17, struct ifreq)	/* get ifnet flags */
+#define	SIOCLATFLAGS	_IOWR('i', 17, struct ifreq)	/* get ifnet flags */
 
 #define	SIOCGIFBRDADDR	_IOWR('i', 35, struct ifreq)	/* get broadcast addr */
+#define	SIOCLATBRDADDR	_IOWR('i', 35, struct ifreq)	/* get broadcast addr */
 #define	SIOCSIFBRDADDR	 _IOW('i', 19, struct ifreq)	/* set broadcast addr */
 
 #define	SIOCGIFCONF	_IOWR('i', 38, struct ifconf)	/* get ifnet list */
+#define	SIOCLATCONF	_IOWR('i', 38, struct ifconf)	/* get ifnet list */
 
 #define	SIOCGIFNETMASK	_IOWR('i', 37, struct ifreq)	/* get net addr mask */
+#define	SIOCLATNETMASK	_IOWR('i', 37, struct ifreq)	/* get net addr mask */
 #define	SIOCSIFNETMASK	 _IOW('i', 22, struct ifreq)	/* set net addr mask */
 
 #define	SIOCGIFMETRIC	_IOWR('i', 23, struct ifreq)	/* get IF metric */
+#define	SIOCLATMETRIC	_IOWR('i', 23, struct ifreq)	/* get IF metric */
 #define	SIOCSIFMETRIC	 _IOW('i', 24, struct ifreq)	/* set IF metric */
 
 #define	SIOCDIFADDR	 _IOW('i', 25, struct ifreq)	/* delete IF addr */
 
 #define	SIOCAIFADDR	 _IOW('i', 26, struct ifaliasreq)/* add/chg IF alias */
 #define	SIOCGIFALIAS	_IOWR('i', 27, struct ifaliasreq)/* get IF alias */
+#define	SIOCLATALIAS	_IOWR('i', 27, struct ifaliasreq)/* get IF alias */
 #define	SIOCGIFAFLAG_IN _IOWR('i', 39, struct ifreq)	 /* get addr flags */
+#define	SIOCLATAFLAG_IN _IOWR('i', 39, struct ifreq)	 /* get addr flags */
 
 #define	SIOCALIFADDR	 _IOW('i', 28, struct if_laddrreq) /* add IF addr */
 #define	SIOCGLIFADDR	_IOWR('i', 29, struct if_laddrreq) /* get IF addr */
@@ -80,6 +89,7 @@
 /* get/set IF addr preference */
 #define	SIOCSIFADDRPREF	 _IOW('i', 31, struct if_addrprefreq)
 #define	SIOCGIFADDRPREF	_IOWR('i', 32, struct if_addrprefreq)
+#define	SIOCLATADDRPREF	_IOWR('i', 32, struct if_addrprefreq)
 
 #define	SIOCADDMULTI	 _IOW('i', 49, struct ifreq)	/* add m'cast addr */
 #define	SIOCDELMULTI	 _IOW('i', 50, struct ifreq)	/* del m'cast addr */
@@ -89,25 +99,32 @@
 
 #define	SIOCSIFMEDIA	_IOWR('i', 53, struct ifreq)	/* set net media */
 #define	SIOCGIFMEDIA	_IOWR('i', 54, struct ifmediareq) /* get net media */
+#define	SIOCLATMEDIA	_IOWR('i', 54, struct ifmediareq) /* get net media */
 
 #define	SIOCSIFGENERIC	 _IOW('i', 57, struct ifreq)	/* generic IF set op */
 #define	SIOCGIFGENERIC	_IOWR('i', 58, struct ifreq)	/* generic IF get op */
+#define	SIOCLATGENERIC	_IOWR('i', 58, struct ifreq)	/* generic IF get op */
 
 #define	SIOCSIFPHYADDR	 _IOW('i', 70, struct ifaliasreq) /* set gif addres */
 #define	SIOCGIFPSRCADDR	_IOWR('i', 71, struct ifreq)	/* get gif psrc addr */
+#define	SIOCLATPSRCADDR	_IOWR('i', 71, struct ifreq)	/* get gif psrc addr */
 #define	SIOCGIFPDSTADDR	_IOWR('i', 72, struct ifreq)	/* get gif pdst addr */
+#define	SIOCLATPDSTADDR	_IOWR('i', 72, struct ifreq)	/* get gif pdst addr */
 #define	SIOCDIFPHYADDR	 _IOW('i', 73, struct ifreq)	/* delete gif addrs */
 #define	SIOCSLIFPHYADDR	 _IOW('i', 74, struct if_laddrreq) /* set gif addrs */
 #define	SIOCGLIFPHYADDR	_IOWR('i', 75, struct if_laddrreq) /* get gif addrs */
 
 #define	SIOCSIFMTU	 _IOW('i', 127, struct ifreq)	/* set ifnet mtu */
 #define	SIOCGIFMTU	_IOWR('i', 126, struct ifreq)	/* get ifnet mtu */
+#define	SIOCLATMTU	_IOWR('i', 126, struct ifreq)	/* get ifnet mtu */
 
 /* 128 was SIOCGIFDATA */
+/* 128 was SIOCLATDATA */
 /* 129 was SIOCZIFDATA */
 
 /* 125 was SIOCSIFASYNCMAP */
 /* 124 was SIOCGIFASYNCMAP */
+/* 124 was SIOCLATASYNCMAP */
 
 #define	SIOCSDRVSPEC     _IOW('i', 123, struct ifdrv)   /* set driver-specific
 							   parameters */
@@ -119,7 +136,9 @@
 #define	SIOCIFGCLONERS	_IOWR('i', 120, struct if_clonereq) /* get cloners */
 
 #define	SIOCGIFDLT	_IOWR('i', 119, struct ifreq)	/* get DLT */
+#define	SIOCLATDLT	_IOWR('i', 119, struct ifreq)	/* get DLT */
 #define	SIOCGIFCAP	_IOWR('i', 118, struct ifcapreq)/* get capabilities */
+#define	SIOCLATCAP	_IOWR('i', 118, struct ifcapreq)/* get capabilities */
 #define	SIOCSIFCAP	 _IOW('i', 117, struct ifcapreq)/* set capabilities */
 
 #define	SIOCSVH		_IOWR('i', 130, struct ifreq)	/* set carp param */
@@ -127,6 +146,7 @@
 #define	SIOCINITIFADDR	_IOWR('i', 132, struct ifaddr)
 
 #define	SIOCGIFDATA	_IOWR('i', 133, struct ifdatareq) /* get if_data */
+#define	SIOCLATDATA	_IOWR('i', 133, struct ifdatareq) /* get if_data */
 #define	SIOCZIFDATA	_IOWR('i', 134, struct ifdatareq) /* get if_data then
 							     zero ctrs*/
 
@@ -138,6 +158,7 @@
 
 #define	SIOCGETHERCAP	_IOWR('i', 139, struct eccapreq) /* get ethercap */
 #define SIOCGIFINDEX  _IOWR('i', 140, struct ifreq)   /* get ifnet index */
+#define SIOCLATINDEX  _IOWR('i', 140, struct ifreq)   /* get ifnet index */
 
 #define	SIOCSETPFSYNC	_IOW('i', 247, struct ifreq)	
 #define	SIOCGETPFSYNC	_IOWR('i', 248, struct ifreq)

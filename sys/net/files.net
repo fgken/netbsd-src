@@ -59,12 +59,14 @@ file	netinet/if_atm.c		atm
 file	netinet/in4_cksum.c		inet
 file	netinet/in_cksum.c		inet
 file	netinet/in_gif.c		gif & inet
+file	netinet/in_lat.c		lat & inet
 file	netinet/ip_carp.c		carp & (inet | inet6)	needs-flag
 file	netinet/ip_ecn.c		ipsec | gif | stf
 file	netinet/ip_encap.c		inet | inet6
 file	netinet/ip_etherip.c		etherip & inet
 file	netinet6/ip6_etherip.c		etherip & inet6
 file	netinet6/in6_gif.c		gif & inet6
+file	netinet6/in6_lat.c		lat & inet6
 
 include	"net/agr/files.agr"
 
