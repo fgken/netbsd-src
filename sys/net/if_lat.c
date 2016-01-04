@@ -495,7 +495,11 @@ lat_ioctl(struct ifnet *ifp, u_long cmd, void *data)
 	struct ifreq     *ifr = (struct ifreq*)data;
 	struct ifaddr    *ifa = (struct ifaddr*)data;
 	int error = 0, size;
-	struct sockaddr *dst, *src;
+	struct sockaddr *dst, *src, *src2;
+
+	printf("MYDEBUG: %s %d cmd = %lu\n", __FUNCTION__, __LINE__, cmd);
+
+	src2 = NULL;
 
 	switch (cmd) {
 	case SIOCINITIFADDR:
@@ -534,6 +538,7 @@ lat_ioctl(struct ifnet *ifp, u_long cmd, void *data)
 	case SIOCSIFPHYADDR_IN6:
 #endif /* INET6 */
 	case SIOCSLIFPHYADDR:
+	case SIOCSLIFPHYADDR2:
 		switch (cmd) {
 #ifdef INET
 		case SIOCSIFPHYADDR:
@@ -552,18 +557,53 @@ lat_ioctl(struct ifnet *ifp, u_long cmd, void *data)
 			break;
 #endif
 		case SIOCSLIFPHYADDR:
+		case SIOCSLIFPHYADDR2:
+			printf("lat: DEBUG %s SIOCSLIFPHYADDR2\n", __FUNCTION__);
+			printf("lat: DEBUG %s %d\n", __FUNCTION__, __LINE__);
 			src = (struct sockaddr *)
-				&(((struct if_laddrreq *)data)->addr);
+				&(((struct if_laddrreq_lat *)data)->addr);
+			src2 = (struct sockaddr *)
+				&(((struct if_laddrreq_lat *)data)->addr2);
 			dst = (struct sockaddr *)
-				&(((struct if_laddrreq *)data)->dstaddr);
+				&(((struct if_laddrreq_lat *)data)->dstaddr);
 			break;
 		default:
 			return EINVAL;
 		}
 
+		printf("sa_family = %d\n", src->sa_family);
+		printf("sa_family = %d\n", src2->sa_family);
+		printf("sa_family = %d\n", dst->sa_family);
+		printf("sa_len = %d\n", src->sa_len);
+		printf("sa_len = %d\n", src2->sa_len);
+		printf("sa_len = %d\n", dst->sa_len);
+		printf("sa_data\n");
+		{
+			int i;
+			for (i=0; i<14; i++) {
+				printf("%d ", src->sa_data[i]);
+			}
+			printf("\n");
+			for (i=0; i<14; i++) {
+				printf("%d ", src2->sa_data[i]);
+			}
+			printf("\n");
+			for (i=0; i<14; i++) {
+				printf("%d ", dst->sa_data[i]);
+			}
+			printf("\n");
+			for (i=0; i<sizeof(struct if_laddrreq_lat); i++) {
+				printf("%d ", ((char *)data)[i]);
+			}
+			printf("\n");
+		}
+
+		printf("lat: DEBUG %s %d\n", __FUNCTION__, __LINE__);
 		/* sa_family must be equal */
 		if (src->sa_family != dst->sa_family)
 			return EINVAL;
+		
+		printf("lat: DEBUG %s %d\n", __FUNCTION__, __LINE__);
 
 		/* validate sa_len */
 		switch (src->sa_family) {
@@ -582,6 +622,7 @@ lat_ioctl(struct ifnet *ifp, u_long cmd, void *data)
 		default:
 			return EAFNOSUPPORT;
 		}
+		printf("lat: DEBUG %s %d\n", __FUNCTION__, __LINE__);
 		switch (dst->sa_family) {
 #ifdef INET
 		case AF_INET:
@@ -598,6 +639,7 @@ lat_ioctl(struct ifnet *ifp, u_long cmd, void *data)
 		default:
 			return EAFNOSUPPORT;
 		}
+		printf("lat: DEBUG %s %d\n", __FUNCTION__, __LINE__);
 
 		/* check sa_family looks sane for the cmd */
 		switch (cmd) {
@@ -612,11 +654,13 @@ lat_ioctl(struct ifnet *ifp, u_long cmd, void *data)
 			return EAFNOSUPPORT;
 #endif /* INET6 */
 		case SIOCSLIFPHYADDR:
+		case SIOCSLIFPHYADDR2:
 			/* checks done in the above */
 			break;
 		}
+		printf("lat: DEBUG %s %d\n", __FUNCTION__, __LINE__);
 
-		error = lat_set_tunnel(&sc->lat_if, src, dst);
+		error = lat_set_tunnel(&sc->lat_if, src, src2, dst);
 		break;
 
 #ifdef SIOCDIFPHYADDR
@@ -776,15 +820,17 @@ lat_encap_detach(struct lat_softc *sc)
 }
 
 int
-lat_set_tunnel(struct ifnet *ifp, struct sockaddr *src, struct sockaddr *dst)
+lat_set_tunnel(struct ifnet *ifp, struct sockaddr *src, struct sockaddr *src2, struct sockaddr *dst)
 {
 	struct lat_softc *sc = ifp->if_softc;
 	struct lat_softc *sc2;
 	struct sockaddr *osrc, *odst;
-	struct sockaddr *nsrc, *ndst;
+	struct sockaddr *nsrc, *nsrc2, *ndst;
 	void *osi;
 	int s;
 	int error;
+
+	printf("lat: DEBUG %s %d\n", __FUNCTION__, __LINE__);
 
 	s = splsoftnet();
 
@@ -803,16 +849,24 @@ lat_set_tunnel(struct ifnet *ifp, struct sockaddr *src, struct sockaddr *dst)
 
 		/* XXX both end must be valid? (I mean, not 0.0.0.0) */
 	}
+	printf("lat: DEBUG %s %d\n", __FUNCTION__, __LINE__);
 
 	if ((nsrc = sockaddr_dup(src, M_WAITOK)) == NULL) {
 		splx(s);
 		return ENOMEM;
 	}
-	if ((ndst = sockaddr_dup(dst, M_WAITOK)) == NULL) {
+	if ((nsrc2 = sockaddr_dup(src2, M_WAITOK)) == NULL) {
 		sockaddr_free(nsrc);
 		splx(s);
 		return ENOMEM;
 	}
+	if ((ndst = sockaddr_dup(dst, M_WAITOK)) == NULL) {
+		sockaddr_free(nsrc);
+		sockaddr_free(nsrc2);
+		splx(s);
+		return ENOMEM;
+	}
+	printf("lat: DEBUG %s %d\n", __FUNCTION__, __LINE__);
 
 	/* Firstly, clear old configurations. */
 	if (sc->lat_si) {
@@ -861,6 +915,7 @@ lat_set_tunnel(struct ifnet *ifp, struct sockaddr *src, struct sockaddr *dst)
 		osrc = sc->lat_psrc;
 		odst = sc->lat_pdst;
 		sc->lat_psrc = nsrc;
+		sc->lat_psrc2 = nsrc2;
 		sc->lat_pdst = ndst;
 
 		error = lat_encap_attach(sc);

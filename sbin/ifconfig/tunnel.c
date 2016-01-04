@@ -88,6 +88,7 @@ settunnel(prop_dictionary_t env, prop_dictionary_t oenv)
 	const struct paddr_prefix *srcpfx, *dstpfx;
 	struct if_laddrreq req;
 	prop_data_t srcdata, dstdata;
+	int i;
 
 	srcdata = (prop_data_t)prop_dictionary_get(env, "tunsrc");
 	dstdata = (prop_data_t)prop_dictionary_get(env, "tundst");
@@ -100,6 +101,14 @@ settunnel(prop_dictionary_t env, prop_dictionary_t oenv)
 
 	srcpfx = prop_data_data_nocopy(srcdata);
 	dstpfx = prop_data_data_nocopy(dstdata);
+
+	printf("srcpfx->pfx_len = %d\n", srcpfx->pfx_len);
+	printf("srcpfx->pfx_addr.sa_len = %d\n", srcpfx->pfx_addr.sa_len);
+	printf("srcpfx->pfx_addr.sa_family = %d\n", srcpfx->pfx_addr.sa_family);
+	printf("srcpfx->pfx_addr.sa_data\n");
+	for (i=0; i<14; i++) {
+		printf("%d ", srcpfx->pfx_addr.sa_data[i]);
+	}
 
 	if (srcpfx->pfx_addr.sa_family != dstpfx->pfx_addr.sa_family)
 		errx(EXIT_FAILURE,

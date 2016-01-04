@@ -874,6 +874,7 @@ agr_ioctl_filter(struct ifnet *ifp, u_long cmd, void *arg)
 	case SIOCSIFNETMASK: /* set net addr mask */
 	case SIOCSIFPHYADDR: /* set gif addres */
 	case SIOCSLIFPHYADDR: /* set gif addrs */
+	case SIOCSLIFPHYADDR2: /* set gif addrs */
 	case SIOCSVH: /* set carp param */
 		error = EBUSY;
 		break;

@@ -768,6 +768,15 @@ struct if_laddrreq {
 	struct sockaddr_storage dstaddr; /* out */
 };
 
+struct if_laddrreq_lat {
+	char iflr_name[IFNAMSIZ];
+	unsigned int flags;
+	unsigned int prefixlen;		/* in/out */
+	struct sockaddr_storage addr;	/* in/out */
+	struct sockaddr_storage addr2;	/* in/out */
+	struct sockaddr_storage dstaddr; /* out */
+};
+
 /*
  * Structure for SIOC[SG]IFADDRPREF
  */

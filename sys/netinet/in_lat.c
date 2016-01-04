@@ -97,6 +97,7 @@ in_lat_output(struct ifnet *ifp, int family, struct mbuf *m)
 	struct rtentry *rt;
 	struct lat_softc *sc = ifp->if_softc;
 	struct sockaddr_in *sin_src = satosin(sc->lat_psrc);
+	struct sockaddr_in *sin_src2 = satosin(sc->lat_psrc2);
 	struct sockaddr_in *sin_dst = satosin(sc->lat_pdst);
 	struct ip iphdr;	/* capsule IP header, host byte ordered */
 	int proto, error;
@@ -105,6 +106,8 @@ in_lat_output(struct ifnet *ifp, int family, struct mbuf *m)
 		struct sockaddr		dst;
 		struct sockaddr_in	dst4;
 	} u;
+
+	printf("DEBUG: lat - %s\n", __FUNCTION__);
 
 	if (sin_src == NULL || sin_dst == NULL ||
 	    sin_src->sin_family != AF_INET ||
@@ -155,7 +158,21 @@ in_lat_output(struct ifnet *ifp, int family, struct mbuf *m)
 	}
 
 	memset(&iphdr, 0, sizeof(iphdr));
-	iphdr.ip_src = sin_src->sin_addr;
+
+	/* === Debug === */
+	//iphdr.ip_src = sin_src->sin_addr;
+	printf("lat: Debug write iphdr.ip_src\n");
+	{
+		static char sw = 1;
+		if (sw == 1) {
+			iphdr.ip_src = sin_src->sin_addr;
+		} else {
+			iphdr.ip_src = sin_src2->sin_addr;
+		}
+		sw *= -1;
+	}
+	/* ============= */
+
 	/* bidirectional configured tunnel mode */
 	if (sin_dst->sin_addr.s_addr != INADDR_ANY)
 		iphdr.ip_dst = sin_dst->sin_addr;
@@ -207,6 +224,8 @@ in_lat_input(struct mbuf *m, ...)
 	va_list ap;
 	int af;
 	u_int8_t otos;
+
+	printf("DEBUG: lat - %s\n", __FUNCTION__);
 
 	va_start(ap, m);
 	off = va_arg(ap, int);

@@ -412,6 +412,7 @@ etherip_ioctl(struct ifnet *ifp, u_long cmd, void *data)
 
 	switch (cmd) {
 	case SIOCSLIFPHYADDR:
+	case SIOCSLIFPHYADDR2:
 		src = (struct sockaddr *)
 			&(((struct if_laddrreq *)data)->addr);
 		dst = (struct sockaddr *)

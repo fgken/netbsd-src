@@ -50,9 +50,15 @@
 
 struct encaptab;
 
+struct lat_psrc {
+	struct sockaddr *psrc;
+	/* some info or status */
+};
+
 struct lat_softc {
 	struct ifnet	lat_if;	   /* common area - must be at the top */
 	struct sockaddr	*lat_psrc; /* Physical src addr */
+	struct sockaddr	*lat_psrc2; /* Physical src addr */
 	struct sockaddr	*lat_pdst; /* Physical dst addr */
 	union {
 		struct route  latscr_ro;    /* xxx */
@@ -87,7 +93,7 @@ void	lat_input(struct mbuf *, int, struct ifnet *);
 int	lat_output(struct ifnet *, struct mbuf *,
 		   const struct sockaddr *, struct rtentry *);
 int	lat_ioctl(struct ifnet *, u_long, void *);
-int	lat_set_tunnel(struct ifnet *, struct sockaddr *, struct sockaddr *);
+int	lat_set_tunnel(struct ifnet *, struct sockaddr *, struct sockaddr *, struct sockaddr *);
 void	lat_delete_tunnel(struct ifnet *);
 #ifdef LAT_ENCAPCHECK
 int	lat_encapcheck(struct mbuf *, int, int, void *);
